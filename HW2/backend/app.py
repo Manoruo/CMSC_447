@@ -1,9 +1,11 @@
 from flask import Flask, request 
 from flask_sqlalchemy import SQLAlchemy
 import datetime
+from flask_cors import CORS
+
 
 app = Flask(__name__)
-    
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:cartoon12@localhost/HW_DB'
 db = SQLAlchemy(app)
 
@@ -30,6 +32,7 @@ def home():
     return "Hello, Flask!"
 
 # create a new user 
+# create a new user 
 @app.route('/user', methods=['POST'])
 def create_user():
     name = request.json['name']
@@ -37,7 +40,7 @@ def create_user():
     user = User(name, points)
     db.session.add(user)
     db.session.commit()
-    return format_user(user)
+    return {'user': format_user(user), 'id': user.id}
 
 
 # serach multiple users 
